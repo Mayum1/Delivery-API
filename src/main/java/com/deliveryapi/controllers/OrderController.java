@@ -50,7 +50,7 @@ public class OrderController {
         final boolean updated = orderService.updateOrder(id, order);
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/{id}")
@@ -59,7 +59,7 @@ public class OrderController {
 
         return deleted
                 ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }

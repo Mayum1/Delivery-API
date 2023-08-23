@@ -3,9 +3,6 @@ package com.deliveryapi.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,4 +19,3 @@ public class Product {
     private double price;
 
 }
-

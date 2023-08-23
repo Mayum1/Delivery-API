@@ -3,12 +3,14 @@ package com.deliveryapi.services;
 import com.deliveryapi.exceptions.ResourceNotFoundException;
 import com.deliveryapi.models.Order;
 import com.deliveryapi.repositories.OrderRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @AllArgsConstructor
+@Transactional
 @Service
 public class OrderServiceImpl implements OrderService {
 

@@ -3,12 +3,14 @@ package com.deliveryapi.services;
 import com.deliveryapi.exceptions.ResourceNotFoundException;
 import com.deliveryapi.models.Address;
 import com.deliveryapi.repositories.AddressRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @AllArgsConstructor
+@Transactional
 @Service
 public class AddressServiceImpl implements AddressService {
 

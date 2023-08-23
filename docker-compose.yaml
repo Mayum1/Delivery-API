@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  postgres:
+    container_name: delivery-postgres
+    image: postgres:14
+    environment:
+      POSTGRES_DB: delivery
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+
+  delivery_api:
+    container_name: delivery-api
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    links:
+      - postgres
+    depends_on:
+      - postgres
