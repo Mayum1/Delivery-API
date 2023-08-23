@@ -48,6 +48,7 @@ public class OrderController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateOrder(@PathVariable Long id, @RequestBody Order order) {
         final boolean updated = orderService.updateOrder(id, order);
+
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
