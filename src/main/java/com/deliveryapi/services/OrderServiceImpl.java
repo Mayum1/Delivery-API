@@ -28,6 +28,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getOrdersByStatus(String status) {
+        Order.OrderStatus orderStatus = Order.OrderStatus.fromValue(status);
+        return orderRepository.findByStatus(orderStatus);
+    }
+
+    @Override
     public void createOrder(Order order) {
         orderRepository.save(order);
     }

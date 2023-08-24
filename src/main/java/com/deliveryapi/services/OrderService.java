@@ -8,6 +8,7 @@ public interface OrderService {
 
     List<Order> getAllOrders();
     Order getOrderById(Long id);
+    List<Order> getOrdersByStatus(String status);
     void createOrder(Order order);
     boolean updateOrder(Long id, Order order);
     boolean deleteOrder(Long id);
