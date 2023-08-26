@@ -4,7 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -27,19 +32,23 @@ public class Order {
     private Long id;
 
     @Schema(description = "Идентификатор пользователя-заказчика")
+    @NotNull(message = "Укажите идентификатор пользователя-заказчика")
     private Long customerId;
 
     @ManyToMany
     @JoinTable(name = "order_products")
     @Schema(description = "Заказанные товары", example = "[{\"id\": 4}]")
+    @NotEmpty(message = "Корзина не может быть пуста")
     private List<Product> products;
 
     @ManyToOne
     @JoinColumn(name = "address_id")
     @Schema(description = "Адрес доставки", example = "{\"id\": 1}")
+    @NotNull(message = "Укажите id адреса")
     private Address shippingAddress;
 
     @Schema(description = "Статус доставки", example = "обработка")
+    @NotNull(message = "Укажите статус заказа")
     private OrderStatus status;
 
     public enum OrderStatus {

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterStyle;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/delivery/orders")
-@Tag(name="Контроллер доставок", description = "Контроллер управления заказами доставки")
+@Tag(name = "Контроллер доставок", description = "Контроллер управления заказами доставки")
 public class OrderController {
 
     private final OrderService orderService;
@@ -76,7 +77,7 @@ public class OrderController {
     )
     @PostMapping
     public ResponseEntity<?> createOrder(
-            @RequestBody Order order
+            @RequestBody @Valid Order order
     ) {
         orderService.createOrder(order);
 
@@ -90,13 +91,10 @@ public class OrderController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateOrder(
             @PathVariable @Parameter(description = "Идентификатор доставки") Long id,
-            @RequestBody Order order
+            @RequestBody @Valid Order order
     ) {
-        final boolean updated = orderService.updateOrder(id, order);
-
-        return updated
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        orderService.updateOrder(id, order);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(
@@ -107,11 +105,8 @@ public class OrderController {
     public ResponseEntity<?> deleteOrder(
             @PathVariable @Parameter(description = "Идентификатор доставки") Long id
     ) {
-        final boolean deleted = orderService.deleteOrder(id);
-
-        return deleted
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        orderService.deleteOrder(id);
+        return ResponseEntity.ok().build();
     }
 
 }

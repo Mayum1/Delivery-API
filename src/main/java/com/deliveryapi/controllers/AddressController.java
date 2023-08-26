@@ -5,6 +5,7 @@ import com.deliveryapi.services.AddressService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/delivery/addresses")
-@Tag(name="Контроллер адресов", description = "Контроллер управления адресами доставки")
+@Tag(name = "Контроллер адресов", description = "Контроллер управления адресами доставки")
 public class AddressController {
 
     private final AddressService addressService;
@@ -58,7 +59,7 @@ public class AddressController {
     )
     @PostMapping
     public ResponseEntity<?> createAddress(
-            @RequestBody Address address
+            @RequestBody @Valid Address address
     ) {
         addressService.createAddress(address);
 
@@ -72,13 +73,10 @@ public class AddressController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateAddress(
             @PathVariable @Parameter(description = "Идентификтор адреса") Long id,
-            @RequestBody Address address
+            @RequestBody @Valid Address address
     ) {
-        final boolean updated = addressService.updateAddress(id, address);
-
-        return updated
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        addressService.updateAddress(id, address);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(
@@ -89,11 +87,8 @@ public class AddressController {
     public ResponseEntity<?> deleteAddress(
             @PathVariable @Parameter(description = "Идентификтор адреса") Long id
     ) {
-        final boolean deleted = addressService.deleteAddress(id);
-
-        return deleted
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        addressService.deleteAddress(id);
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -4,7 +4,9 @@ import com.deliveryapi.exceptions.ResourceNotFoundException;
 import com.deliveryapi.models.Address;
 import com.deliveryapi.repositories.AddressRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,28 +30,28 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public void createAddress(Address address) {
+    public void createAddress(@Valid Address address) {
         addressRepository.save(address);
     }
 
     @Override
-    public boolean updateAddress(Long id, Address address) {
+    public ResponseEntity<Void> updateAddress(Long id, @Valid Address address) {
         if (addressRepository.existsById(id)) {
             address.setId(id);
             addressRepository.save(address);
-            return true;
+            return ResponseEntity.ok().build();
         } else {
-            return false;
+            throw new ResourceNotFoundException("Address with id " + id + " not found");
         }
     }
 
     @Override
-    public boolean deleteAddress(Long id) {
+    public ResponseEntity<Void> deleteAddress(Long id) {
         if (addressRepository.existsById(id)) {
             addressRepository.deleteById(id);
-            return true;
+            return ResponseEntity.ok().build();
         } else {
-            return false;
+            throw new ResourceNotFoundException("Address with id " + id + " not found");
         }
     }
 }

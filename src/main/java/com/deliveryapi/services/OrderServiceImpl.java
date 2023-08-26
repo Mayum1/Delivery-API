@@ -4,7 +4,9 @@ import com.deliveryapi.exceptions.ResourceNotFoundException;
 import com.deliveryapi.models.Order;
 import com.deliveryapi.repositories.OrderRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,28 +36,28 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void createOrder(Order order) {
+    public void createOrder(@Valid Order order) {
         orderRepository.save(order);
     }
 
     @Override
-    public boolean updateOrder(Long id, Order order) {
+    public ResponseEntity<Void> updateOrder(Long id, @Valid Order order) {
         if (orderRepository.existsById(id)) {
             order.setId(id);
             orderRepository.save(order);
-            return true;
+            return ResponseEntity.ok().build();
         } else {
-            return false;
+            throw new ResourceNotFoundException("Order with id " + id + " not found");
         }
     }
 
     @Override
-    public boolean deleteOrder(Long id) {
+    public ResponseEntity<Void> deleteOrder(Long id) {
         if (orderRepository.existsById(id)) {
             orderRepository.deleteById(id);
-            return true;
+            return ResponseEntity.ok().build();
         } else {
-            return false;
+            throw new ResourceNotFoundException("Order with id " + id + " not found");
         }
     }
 

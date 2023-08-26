@@ -4,7 +4,9 @@ import com.deliveryapi.exceptions.ResourceNotFoundException;
 import com.deliveryapi.models.Product;
 import com.deliveryapi.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Transactional
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;
 
@@ -28,28 +30,28 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void createProduct(Product product) {
+    public void createProduct(@Valid Product product) {
         productRepository.save(product);
     }
 
     @Override
-    public boolean updateProduct(Long id, Product product) {
+    public ResponseEntity<Void> updateProduct(Long id, @Valid Product product) {
         if (productRepository.existsById(id)) {
             product.setId(id);
             productRepository.save(product);
-            return true;
-        }
-        else {
-            return false;
+            return ResponseEntity.ok().build();
+        } else {
+            throw new ResourceNotFoundException("Product with id " + id + " not found");
         }
     }
 
     @Override
-    public boolean deleteProduct(Long id) {
+    public ResponseEntity<Void> deleteProduct(Long id) {
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
-            return true;
+            return ResponseEntity.ok().build();
+        } else {
+            throw new ResourceNotFoundException("Product with id " + id + " not found");
         }
-        return false;
     }
 }

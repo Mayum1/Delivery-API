@@ -5,6 +5,7 @@ import com.deliveryapi.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/delivery/products")
-@Tag(name="Контроллер товаров", description = "Контроллер управления товарами доставки")
+@Tag(name = "Контроллер товаров", description = "Контроллер управления товарами доставки")
 public class ProductController {
 
     private final ProductService productService;
@@ -58,7 +59,7 @@ public class ProductController {
     )
     @PostMapping
     public ResponseEntity<?> createProduct(
-            @RequestBody Product product
+            @RequestBody @Valid Product product
     ) {
         productService.createProduct(product);
 
@@ -72,13 +73,10 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(
             @PathVariable @Parameter(description = "Идентификатор адреса") Long id,
-            @RequestBody Product product
+            @RequestBody @Valid Product product
     ) {
-        final boolean updated = productService.updateProduct(id, product);
-
-        return updated
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        productService.updateProduct(id, product);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(
@@ -89,10 +87,7 @@ public class ProductController {
     public ResponseEntity<?> deleteProduct(
             @PathVariable @Parameter(description = "Идентификатор адреса") Long id
     ) {
-        final boolean deleted = productService.deleteProduct(id);
-
-        return deleted
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        productService.deleteProduct(id);
+        return ResponseEntity.ok().build();
     }
 }

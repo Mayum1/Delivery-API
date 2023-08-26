@@ -1,7 +1,7 @@
 package com.deliveryapi.services;
 
-import com.deliveryapi.models.Order;
 import com.deliveryapi.models.Product;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface ProductService {
 
     void createProduct(Product product);
 
-    boolean updateProduct(Long id, Product product);
+    ResponseEntity<Void> updateProduct(Long id, Product product);
 
-    boolean deleteProduct(Long id);
+    ResponseEntity<Void> deleteProduct(Long id);
 }
